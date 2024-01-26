@@ -1,0 +1,18 @@
+
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div>
+      <label for="username">Username:</label>
+      <input type="text" id="username" formControlName="username" />
+      <div *ngIf="loginForm.get('username').hasError('required') && loginForm.get('username').touched">
+        Username is required.
+      </div>
+      <div *ngIf="loginForm.get('username').hasError('minlength') && loginForm.get('username').touched">
+        Username must be at least 3 characters long.
+      </div>
+      <div *ngIf="loginForm.get('username').hasError('maxlength') && loginForm.get('username').touched">
+        Username cannot be longer than 10 characters.
+      </div>
+    </div>
+  
+    <button type="submit" [disabled]="!loginForm.valid">Login</button>
+  </form>
