@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-game-barrack',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './game-barrack.component.css'
 })
 export class GameBarrackComponent {
-
+   //TODO: Use modell
+   @Input('barrack') barrack: number = 0;
 }

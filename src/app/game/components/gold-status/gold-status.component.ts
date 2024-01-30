@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-gold-status',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './gold-status.component.css'
 })
 export class GoldStatusComponent {
-
+  @Input('gold') gold: number = 0;
 }

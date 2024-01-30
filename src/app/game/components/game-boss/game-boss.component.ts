@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-game-boss',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './game-boss.component.css'
 })
 export class GameBossComponent {
-
+   //TODO: Use modell
+   @Input('boss') boss: number = 0;
 }

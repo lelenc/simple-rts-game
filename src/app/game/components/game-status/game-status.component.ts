@@ -8,7 +8,11 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './game-status.component.css'
 })
 export class GameStatusComponent {
-  @Input() currentGold: number = 0;
+  currentGold: number = 0;
+  workers: Array<number> = [1, 2, 3];
+  warriors: Array<number> = [1, 2, 3];
+  barracks: Array<number> = [1, 2, 3];
+  boss: number = 1
 
   constructor(private authService: AuthService, private router: Router) { }
 

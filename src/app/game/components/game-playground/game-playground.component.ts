@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './game-playground.component.css'
 })
 export class GamePlaygroundComponent {
-
+  rowSize: number = 10;
+  colSize: number = 17;
 }
