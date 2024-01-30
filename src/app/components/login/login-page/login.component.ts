@@ -9,23 +9,43 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
- 
+  showErrorMessages = false;
   loginForm: FormGroup;
+  errorMessages: { [key: string]: string } = {};
 
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService,) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService,) { }
+
+  ngOnInit() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
     });
+
+    this.errorMessages = {
+      'required': 'Username is required.',
+      'minlength': 'Username must be at least 3 characters long.',
+      'maxlength': 'Username cannot be longer than 10 characters.'
+    };
   }
 
   login() {
+    this.showErrorMessages = true;
+
     if (this.loginForm.valid) {
       const username = this.loginForm.value.username;
       this.authService.login(username);
       console.log('Bejelentkezési adatok:', username);
       this.router.navigate(['/game']);
-    } else {
-      // TODO
     }
+  }
+
+  getErrorMessage() {
+    const errors = this.loginForm.get('username').errors;
+
+    if (errors) {
+      const firstErrorKey = Object.keys(errors)[0];
+      return this.errorMessages[firstErrorKey];
+    }
+
+    return '';
   }
 }
