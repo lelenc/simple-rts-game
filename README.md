@@ -6,11 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - Use grid/matrix for playground
 
-- Exit button
-
 - Re/Start button
-
-- Status column 
 
 ## Nice to have
 
@@ -18,7 +14,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - Generate map
 
-
+- Responsive
 
 ## Development server
 
