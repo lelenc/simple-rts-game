@@ -33,7 +33,6 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const username = this.loginForm.value.username;
       this.authService.login(username);
-      console.log('Bejelentkezési adatok:', username);
       this.router.navigate(['/game']);
     }
   }

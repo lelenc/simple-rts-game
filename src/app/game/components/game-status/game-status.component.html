@@ -1,1 +1,39 @@
-<p>game-status works!</p>
+<div class="header">
+    <span class="welcome-text">Welcome {{ user }}</span>
+    <div class="logout-button" (click)="logout()">
+        <img src="./assets/icons/logout.svg">
+    </div>
+</div>
+
+<div class="status-container">
+    <span class="status-text">Game Status</span>
+
+    <!-- Arany állapota -->
+   <!-- <app-gold-status [gold]="currentGold"></app-gold-status> -->
+
+    <!-- Worker komponensek -->
+    <div class="unit-section">
+        <h2>Workers</h2>
+       <!-- <app-worker *ngFor="let worker of workers" [worker]="worker"></app-worker> -->
+    </div>
+
+    <!-- Barracks komponensek -->
+    <div class="unit-section">
+        <h2>Barracks</h2>
+        <!-- <app-barracks *ngFor="let barracks of barracksList" [barracks]="barracks"></app-barracks> -->
+        <button (click)="addBarrack()">Build Barracks</button>
+    </div>
+
+    <!-- Warrior komponensek -->
+    <div class="unit-section">
+        <h2>Warriors</h2>
+       <!-- <app-warrior *ngFor="let warrior of warriors" [warrior]="warrior"></app-warrior> -->
+        <button (click)="addWarrior()">Recruit Warrior</button>
+    </div>
+
+    <!-- Boss komponens -->
+    <div class="unit-section">
+        <h2>Boss</h2>
+       <!-- <app-boss [boss]="boss"></app-boss> -->
+    </div>
+</div>

@@ -40,11 +40,15 @@
 .form-group button {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #005c20;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #004f1a
 }
 
 .error-message {
