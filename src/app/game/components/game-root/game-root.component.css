@@ -1,0 +1,16 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: stretch
+}
+
+app-game-status {
+    flex-grow: 2;
+    background-color: pink;
+}
+
+app-game-playground {
+    flex-grow: 8;
+    background-color: green;
+}

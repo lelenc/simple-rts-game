@@ -4,16 +4,19 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## TODO
 
+- Use grid/matrix for playground
+
 - Exit button
 
 - Re/Start button
 
 - Status column 
 
-
-##Nice to have
+## Nice to have
 
 - Pause button
+
+- Generate map
 
 
 
