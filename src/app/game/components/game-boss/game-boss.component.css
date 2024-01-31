@@ -1,0 +1,39 @@
+.boss-image img {
+    height: 60px;
+  }
+  
+  .boss-card {
+    display: flex;
+    align-items: center;
+  }
+  
+  .boss-status {
+    flex-grow: 1;
+  }
+  
+  .hp-bar {
+    position: relative;
+    background-color: #9e9fad; /* Háttérszín a bar mögötti részhez */
+    height: 20px;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .hp-fill {
+    background-color: #28a745;
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+  
+  .hp-text {
+    color: #000;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
