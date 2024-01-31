@@ -1,0 +1,24 @@
+.worker-card {
+    display: flex;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+}
+
+.worker-card.selected{
+    border: 1px solid red;
+}
+
+.worker-image img {
+    height: 60px; 
+}
+
+.worker-info {
+    margin-left: 10px;
+}
+
+.progress {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+}

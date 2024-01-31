@@ -27,19 +27,19 @@
 
     <div class="unit-section">
         <h2>Workers</h2>
-        <app-game-worker *ngFor="let worker of workers" [worker]="worker"></app-game-worker>
+        <app-game-worker *ngFor="let worker of workers" (click)="selectWorker(worker)" [worker]="worker"></app-game-worker>
     </div>
 
     <div class="unit-section">
         <h2>Barracks</h2>
-        <app-game-barrack *ngFor="let barrack of barracks" [barrack]="barrack"></app-game-barrack>
-        <button [disabled]="gold < 250" (click)="addBarrack()">Build Barrack</button>
+        <app-game-barrack *ngFor="let barrack of barracks" (click)="selectBarrack(barrack)" [barrack]="barrack"></app-game-barrack>
+        <button [disabled]="!selectedWorker || gold < 250" (click)="buildBarrack()">Build Barrack</button>
     </div>
 
     <div class="unit-section">
         <h2>Warriors</h2>
-        <app-game-warrior *ngFor="let warrior of warriors" [warrior]="warrior"></app-game-warrior>
-        <button [disabled]="gold < 200" (click)="addWarrior()">Recruit Warrior</button>
+        <app-game-warrior *ngFor="let warrior of warriors" [warrior]="warrior" (click)="selectWarrior(warrior)" ></app-game-warrior>
+        <button [disabled]="!selectedBarrack || gold < 200" (click)="makeWarrior()">Make Warrior</button>
     </div>
 
 </div>

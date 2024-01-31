@@ -5,6 +5,10 @@
     padding: 10px;
 }
 
+.worker-card.selected{
+    border: 1px solid red;
+}
+
 .worker-image img {
     height: 60px; 
 }

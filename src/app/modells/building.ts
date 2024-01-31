@@ -3,3 +3,7 @@ export interface Building {
   location: { x: number, y: number }; // Az épület pozíciója a térképen
   constructionProgress: number; // Az épület építési folyamata (0-100)
 }
+
+export interface Barrack extends Building {
+  isBusy: boolean
+}

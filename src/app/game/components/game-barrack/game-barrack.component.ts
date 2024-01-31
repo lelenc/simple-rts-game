@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Barrack } from '../../../modells/building';
 
 @Component({
   selector: 'app-game-barrack',
@@ -7,5 +8,5 @@ import { Component, Input } from '@angular/core';
 })
 export class GameBarrackComponent {
    //TODO: Use modell
-   @Input('barrack') barrack: number = 0;
+   @Input('barrack') barrack: Barrack
 }

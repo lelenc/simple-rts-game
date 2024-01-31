@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { GameStateService } from '../../../services/game-state.service';
+import { Worker } from '../../../modells/worker';
+import { Barrack, Building } from '../../../modells/building';
+import { Warrior } from '../../../modells/warrior';
 
 @Component({
   selector: 'app-game-status',
@@ -10,20 +13,37 @@ import { GameStateService } from '../../../services/game-state.service';
 })
 export class GameStatusComponent implements OnInit {
   gold: number = 0;
+  workers: Worker[];
+  barracks: Barrack[];
+  warriors: Warrior[];
 
-  workers: any[];
-  warriors: Array<number> = [];
-  barracks: Array<number> = [];
- 
+  selectedWorker: Worker | null = null;
+  selectedBarrack: Barrack | null = null;
+  selectedWarrior: Warrior | null = null;
 
   constructor(private authService: AuthService, private router: Router, private gameStateService: GameStateService) { }
   
   ngOnInit(): void {
     this.gameStateService.getGold().subscribe((gold) => {
+      console.log('gold', gold)
       this.gold = gold;
     });
 
-    this.workers = this.gameStateService.getWorkers();
+    this.gameStateService.getWorkers().subscribe((workers) => {
+      console.log('workers', workers)
+      this.workers = workers
+    });
+
+    this.gameStateService.getBarracks().subscribe((barracks)=> {
+      console.log('barracks', barracks)
+      this.barracks = barracks;
+    })
+
+    this.gameStateService.getWarriors().subscribe((warriors) => {
+      console.log('warriors', warriors)
+      this.warriors = warriors
+    });
+
   }
 
   get user(): string | null {
@@ -35,18 +55,50 @@ export class GameStatusComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  addBarrack(): void {
-    this.gameStateService.decreaseGold(250)
+  selectWorker(worker: Worker): void {
+    this.selectedWorker = worker === this.selectedWorker ? null : worker;
+    console.log('selectedWorker', this.selectedWorker)
   }
 
-  addWarrior(): void {
-    this.gameStateService.decreaseGold(200)
+  selectBarrack(barrack: Barrack): void {
+    this.selectedBarrack = barrack === this.selectedBarrack ? null : barrack;
+    console.log('selectedBarrack', this.selectedBarrack)
+  }
+
+  selectWarrior(warrior: Warrior): void {
+    this.selectedWarrior = warrior === this.selectedWarrior ? null : warrior;
+    console.log('selectedWarrior', this.selectedWarrior)
+  }
+
+  buildBarrack(): void {
+    if (this.selectedWorker) {
+      this.gameStateService.buildBarrack(this.selectedWorker);
+    }
+  }
+
+  makeWarrior(): void {
+    if (this.selectedBarrack) {
+      this.gameStateService.makeWarrior(this.selectedBarrack);
+    }
+  }
+
+  attackMonster(): void {
+    if (this.selectedWarrior) {
+      this.gameStateService.warriorAttack(this.selectedWarrior);
+    }
   }
 
   
+
+
+
+
+
+
+
   //Temp
   increaseGold(): void {
-    this.gameStateService.increaseGold(1)
+    this.gameStateService.increaseGold(200)
   }
 
   decreseGold(){
