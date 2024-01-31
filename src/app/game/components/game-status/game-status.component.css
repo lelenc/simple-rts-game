@@ -57,9 +57,9 @@
     background-color: transparent; 
   }
   
-  .unit-section {
+  /*.unit-section {
     margin-top: 20px;
-  }
+  }*/
   
   h2 {
     font-size: 18px;
@@ -83,4 +83,9 @@
   
   button:hover {
     background-color: #004f1a
+  }
+
+  button[disabled] {
+    background-color: #808080; /* Szürke háttér a letiltott gombnak */
+    cursor: not-allowed; /* Mozgatás tilos kurzor a letiltott gombon */
   }

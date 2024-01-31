@@ -6,12 +6,23 @@
 </div>
 
 <div class="status-container">
+    
+    <div class="unit-section">
+        <h2>Temp</h2>
+        <button (click)="increaseGold()">Increase gold</button>
+        <button (click)="decreseGold()">Decrease gold</button>
+        <button (click)="addDamage()">Decrease boss</button>
+    </div>
 
-    <app-gold-status [gold]="currentGold"></app-gold-status>
+
+    <div class="unit-section">
+        <h2>Gold</h2>
+        <app-gold-status></app-gold-status>
+    </div>
 
     <div class="unit-section">
         <h2>Boss</h2>
-        <app-game-boss [boss]="boss"></app-game-boss>
+        <app-game-boss></app-game-boss>
     </div>
 
     <div class="unit-section">
@@ -22,13 +33,13 @@
     <div class="unit-section">
         <h2>Barracks</h2>
         <app-game-barrack *ngFor="let barrack of barracks" [barrack]="barrack"></app-game-barrack>
-        <button (click)="addBarrack()">Build Barrack</button>
+        <button [disabled]="gold < 250" (click)="addBarrack()">Build Barrack</button>
     </div>
 
     <div class="unit-section">
         <h2>Warriors</h2>
         <app-game-warrior *ngFor="let warrior of warriors" [warrior]="warrior"></app-game-warrior>
-        <button (click)="addWarrior()">Recruit Warrior</button>
+        <button [disabled]="gold < 200" (click)="addWarrior()">Recruit Warrior</button>
     </div>
 
 </div>

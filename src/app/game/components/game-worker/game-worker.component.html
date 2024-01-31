@@ -1,1 +1,12 @@
-<p>game-worker works!</p>
+<div class="worker-card">
+    <div class="worker-image">
+        <img src="./assets/icons/miner-status.svg">
+    </div>
+    <div class="worker-info">
+        <h3>{{ worker.name }}</h3>
+        <p>Status: {{ worker.status }}</p>
+        <div class="progress" *ngIf="worker.isBusy">
+            <div class="progress-bar" [style.width]="worker.progress + '%'"></div>
+        </div>
+    </div>
+</div>

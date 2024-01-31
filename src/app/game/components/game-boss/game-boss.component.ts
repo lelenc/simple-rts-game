@@ -1,19 +1,25 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GameStateService } from '../../../services/game-state.service';
 
 @Component({
   selector: 'app-game-boss',
   templateUrl: './game-boss.component.html',
   styleUrl: './game-boss.component.css'
 })
-export class GameBossComponent {
-   //TODO: Use modell
-   @Input('boss') boss: number = 0;
-  
-   currentHp: number = 150;
-   fullHp: number = 150;
+export class GameBossComponent implements OnInit {
+  currentHp: number = 150;
+  fullHp: number = 150;
 
+  constructor(private gameStateService: GameStateService) { }
 
-   getHpPercentage(): number {
+  ngOnInit(): void {
+    this.gameStateService.getMonster().subscribe((monster) => {
+      this.currentHp = monster.currentHP;
+      this.fullHp = monster.fullHP;
+    })
+  }
+
+  getHpPercentage(): number {
     return (this.currentHp / this.fullHp) * 100;
   }
 

@@ -1,0 +1,17 @@
+.gold-image img {
+    height: 60px;
+  }
+
+  .gold-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+  }
+
+  .gold-text {
+    font-size: 18px;
+    font-weight: bold;
+  }
