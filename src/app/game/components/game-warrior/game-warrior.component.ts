@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Warrior } from '../../../modells/warrior';
+import { Warrior } from '../../../modells/models';
+
 
 @Component({
   selector: 'app-game-warrior',

@@ -1,4 +1,4 @@
-<table class="symbolTable">
+<table class="symbolTable" oncontextmenu="return false;">
     <tr *ngFor="let f of [].constructor(rowSize); let r = index">
       <td class="gridCell" *ngFor="let col of [].constructor(colSize); let c = index" [id]="r + '-' + c" (mousedown)="onMouseDown($event, r , c)">
         
@@ -21,7 +21,7 @@
 
         <ng-container *ngFor="let warrior of warriors">
           <img *ngIf="r == warrior.location.row && c == warrior.location.col"
-               src="./assets/icons/warrior.svg" class="place" />
+               src="./assets/icons/warrior.svg" class="place" (mousedown)="onMouseDownWarrior($event, warrior)" [ngClass]="{'selected': this.selectedWarrior == warrior}" />
         </ng-container>
   
 

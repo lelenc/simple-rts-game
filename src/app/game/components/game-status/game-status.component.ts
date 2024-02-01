@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Barrack, Warrior, Worker } from '../../../modells/models';
 import { AuthService } from '../../../services/auth.service';
 import { GameStateService } from '../../../services/game-state.service';
-import { Worker } from '../../../modells/worker';
-import { Barrack, Building } from '../../../modells/building';
-import { Warrior } from '../../../modells/warrior';
+
 
 @Component({
   selector: 'app-game-status',

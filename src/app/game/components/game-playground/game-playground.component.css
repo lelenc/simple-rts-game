@@ -1,6 +1,7 @@
 :host {
     background-color: #28a745;
     text-align: center;
+    overflow: auto;
 }
 
 .gridCell {

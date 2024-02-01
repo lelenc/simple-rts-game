@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Barrack } from '../../../modells/building';
+import { Barrack } from '../../../modells/models';
+
 
 @Component({
   selector: 'app-game-barrack',

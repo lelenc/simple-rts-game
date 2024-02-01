@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Barrack, Building } from '../modells/building';
-import { Monster } from '../modells/monster';
-import { Unit } from '../modells/unit';
-import { Warrior } from '../modells/warrior';
-import { Worker } from '../modells/worker';
+import { BehaviorSubject, interval, map, Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Building, Monster, Warrior, Worker, Barrack, Unit, UnitType } from '../modells/models';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +14,8 @@ export class GameStateService {
   private gold: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private monster: BehaviorSubject<Monster> = new BehaviorSubject<Monster>(null);
 
+  private warriorIntervals: Map<string, Subscription> = new Map<string, Subscription>();
+
   constructor() {}
 
   initializeGame(): void {
@@ -25,12 +24,12 @@ export class GameStateService {
       { type: 'Base', location: { row: 0, col: 0 }, constructionProgress: 100 },
       { type: 'GoldMine', location: { row: 0, col: 16 }, constructionProgress: 100 }
     ]);
-    this.monster.next({ name: 'Endgame Boss', fullHP: 150, currentHP: 150, location: { row: 9, col: 16} });
+    this.monster.next({ name: 'Endgame Boss', fullHP: 150, currentHP: 150, location: { row: 7, col: 16} });
   }
 
   private createInitialWorkers(): Worker[] {
     return [...Array(5)].map((_, i) => (
-      { name: `Worker ${i + 1}`, status: 'Idle', isBusy: false, progress: 0, carriedGold: 0, location: { row: 1, col: i} }
+      { name: `Worker ${i + 1}`, status: 'Idle', isBusy: false, progress: 0, carriedGold: 0, location: { row: 1, col: i}, type: UnitType.Worker }
       ));
   }
 
@@ -94,7 +93,7 @@ export class GameStateService {
 
       const newBarrack: Barrack = {
         type: 'Barrack',
-        location: { row: 9, col: 0 },
+        location: { row: 7, col: 0 },
         constructionProgress: 0,
         isBusy: true,
         status: 'Under construction'
@@ -136,7 +135,8 @@ export class GameStateService {
         damage: 5,
         isBusy: true,
         status: 'Under construction',
-        location: {row: 0, col: 1}
+        location: {row: 0, col: 1},
+        type: UnitType.Warrior
       };
   
       this.decreaseGold(200);
@@ -155,13 +155,52 @@ export class GameStateService {
   }
 
   public warriorAttack(warrior: Warrior): void {
+    console.log('warrior attack')
     if (this.monster.value.currentHP > 0 && !warrior.isBusy) {
       warrior.isBusy = true;
       warrior.status = "Attack monster"
       this.updateWarriors();
-      this.attackMonster(warrior.damage);
+
+      if (!this.warriorIntervals.has(warrior.name)) {
+        const attackInterval = interval(1000).pipe(
+          takeUntil(new Subject<void>())
+        );
+    
+        const subscription = attackInterval.subscribe(() => {
+          if (this.monster.value.currentHP > 0 && this.isWarriorCloseToMonster(warrior)) {
+            this.attackMonster(warrior.damage);
+          } else {
+            this.stopWarriorAttack(warrior);
+          }
+        });
+    
+        this.warriorIntervals.set(warrior.name, subscription);
+      }
+      
     }
   }
+
+  startWarriorAttack(warrior: Warrior): void {
+    warrior.isBusy = true;
+    warrior.status = 'Attack monster';
+  
+    
+  }
+  
+  stopWarriorAttack(warrior: Warrior): void {
+    warrior.isBusy = false;
+    warrior.status = 'Idle';
+    this.updateWarriors();
+
+    console.log('stop attack', warrior)
+  
+    if (this.warriorIntervals.has(warrior.name)) {
+      this.warriorIntervals.get(warrior.name)?.unsubscribe();
+      this.warriorIntervals.delete(warrior.name);
+    }
+  }
+
+
 
   public workerMineGold(worker: Worker): void {
     if (!worker.isBusy) {
@@ -189,7 +228,34 @@ export class GameStateService {
 
 
   public moveUnit(selectUnit: Unit, row: number, col: number){
+    selectUnit.location = {row, col};
+    
+    if (selectUnit.type == UnitType.Worker) {
+      console.log("Worker")
+      console.log(this.buildings.value)
+      let building = this.buildings.value.filter((building) => building.location.col == selectUnit.location.col && building.location.row == selectUnit.location.row)
+      console.log(building)
+      if (building.length && building[0].type === 'GoldMine') {
+        this.workerMineGold(selectUnit as Worker);
+      }else if(building.length && building[0].type === 'Base'){
+        this.workerDepositGold(selectUnit as Worker)
+      }
 
+
+    }
+
+
+    if (selectUnit.type == UnitType.Warrior){
+      if(this.isWarriorCloseToMonster(selectUnit as Warrior)){
+        this.warriorAttack(selectUnit as Warrior);
+      }
+    }
+
+  }
+
+  isWarriorCloseToMonster(warrior: Warrior) {
+   return  this.monster.value.location.col == warrior.location.col &&
+        this.monster.value.location.row == warrior.location.row
   }
 
   

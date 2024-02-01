@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Building } from '../../../modells/building';
-import { Monster } from '../../../modells/monster';
-import { Warrior } from '../../../modells/warrior';
-import { Worker } from '../../../modells/worker';
+import { Building, Monster, Warrior, Worker } from '../../../modells/models';
 import { GameStateService } from '../../../services/game-state.service';
 
 @Component({
@@ -11,7 +8,7 @@ import { GameStateService } from '../../../services/game-state.service';
   styleUrl: './game-playground.component.css'
 })
 export class GamePlaygroundComponent implements OnInit{
-  rowSize: number = 10;
+  rowSize: number = 8;
   colSize: number = 17;
 
   workers: Worker[];
@@ -20,6 +17,7 @@ export class GamePlaygroundComponent implements OnInit{
   monster: Monster
 
   selectedWorker: Worker | null = null;
+  selectedWarrior: Warrior | null = null;
 
   constructor(private gameStateService: GameStateService) { }
   
@@ -47,29 +45,44 @@ export class GamePlaygroundComponent implements OnInit{
   }
 
   onMouseDownWorker(event: MouseEvent, worker: Worker): void {
-    console.log('event down', event)
     if (event.button === 0) {
       this.selectWorker(worker);
-    }else if(event.button === 2){
-      //this.moveSelectedWorker();
+    }
+  }
+
+  onMouseDownWarrior(event: MouseEvent, warrior: Warrior): void {
+    if (event.button === 0) {
+      this.selectWarrior(warrior);
     }
   }
 
   onMouseDown(event: MouseEvent, row : number, col: number){
     console.log('event', event, row, col)
     if (event.button === 2) {
-      
+      if (this.selectedWorker || this.selectWarrior) {
+        this.moveSelectedUnit(row, col);
+      }
     }
   }
 
   selectWorker(worker: Worker): void {
     this.selectedWorker = worker === this.selectedWorker ? null : worker;
+    this.selectedWarrior = null;
     console.log('selectedWorker', this.selectedWorker)
   }
 
-  moveSelectedWorker(row: number, col: number){
+  selectWarrior(warrior: Warrior): void {
+    this.selectedWarrior = warrior === this.selectedWarrior ? null : warrior;
+    this.selectedWorker = null;
+    console.log('selectedWarrior', this.selectedWarrior)
+  }
+
+  moveSelectedUnit(row: number, col: number){
     if(this.selectedWorker){
       this.gameStateService.moveUnit(this.selectedWorker, row, col);
+    }
+    if(this.selectedWarrior){
+      this.gameStateService.moveUnit(this.selectedWarrior, row, col);
     }
   }
 

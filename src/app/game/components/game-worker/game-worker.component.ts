@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Worker } from '../../../modells/worker';
+import { Worker } from '../../../modells/models';
 import { GameStateService } from '../../../services/game-state.service';
 
 
