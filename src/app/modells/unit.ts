@@ -1,5 +1,6 @@
 export interface Unit {
     name: string;
     status: string;
-    isBusy: boolean
+    isBusy: boolean,
+    location: { row: number, col: number }; 
 }

@@ -5,8 +5,15 @@
 
 .gridCell {
     width: 4em;
-    /* Vagy más mértékegység, ami megfelel az igényeidnek */
     height: 4em;
     border: 1px solid #fff;
-    /* Opcionális: keret a cellák közötti határok láthatóságához */
 }
+
+img.place {
+    height: 60px; 
+}
+
+.selected.place {
+    border: 1px solid red;
+}
+

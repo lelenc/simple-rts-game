@@ -1,7 +1,34 @@
 <table class="symbolTable">
     <tr *ngFor="let f of [].constructor(rowSize); let r = index">
-      <td class="gridCell" *ngFor="let col of [].constructor(colSize); let c = index">
+      <td class="gridCell" *ngFor="let col of [].constructor(colSize); let c = index" [id]="r + '-' + c" (mousedown)="onMouseDown($event, r , c)">
         
+
+        <ng-container *ngFor="let building of buildings">
+          <img *ngIf="r == building.location.row && c == building.location.col && building.type == 'Barrack'"
+               src="./assets/icons/barracks.svg" class="place" />
+        
+          <img *ngIf="r == building.location.row && c == building.location.col && building.type == 'GoldMine'"
+               src="./assets/icons/mine.svg" class="place" />
+        
+          <img *ngIf="r == building.location.row && c == building.location.col && building.type == 'Base'"
+               src="./assets/icons/base.svg" class="place" />
+        </ng-container>
+
+        <ng-container *ngFor="let worker of workers">
+          <img *ngIf="r == worker.location.row && c == worker.location.col"
+               src="./assets/icons/miner.svg" class="place" (mousedown)="onMouseDownWorker($event, worker)" [ngClass]="{'selected': this.selectedWorker == worker}"/>
+        </ng-container>
+
+        <ng-container *ngFor="let warrior of warriors">
+          <img *ngIf="r == warrior.location.row && c == warrior.location.col"
+               src="./assets/icons/warrior.svg" class="place" />
+        </ng-container>
+  
+
+        <img *ngIf="r == monster.location.row && c == monster.location.col"
+               src="./assets/icons/monster.svg" class="place" />
+
+
       </td>
     </tr>
   </table>

@@ -1,9 +1,10 @@
 export interface Building {
-  type: string; // Az épület típusa (pl. "Barracks")
-  location: { x: number, y: number }; // Az épület pozíciója a térképen
-  constructionProgress: number; // Az épület építési folyamata (0-100)
+  type: string; 
+  location: { row: number, col: number }; 
+  constructionProgress: number; 
 }
 
 export interface Barrack extends Building {
-  isBusy: boolean
+  isBusy: boolean,
+  status: string;
 }

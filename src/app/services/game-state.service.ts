@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Barrack, Building } from '../modells/building';
 import { Monster } from '../modells/monster';
+import { Unit } from '../modells/unit';
 import { Warrior } from '../modells/warrior';
 import { Worker } from '../modells/worker';
 
@@ -21,14 +22,16 @@ export class GameStateService {
   initializeGame(): void {
     this.workers.next(this.createInitialWorkers());
     this.buildings.next([
-      { type: 'Base', location: { x: 0, y: 0 }, constructionProgress: 100 },
-      { type: 'GoldMine', location: { x: 1, y: 1 }, constructionProgress: 100 }
+      { type: 'Base', location: { row: 0, col: 0 }, constructionProgress: 100 },
+      { type: 'GoldMine', location: { row: 0, col: 16 }, constructionProgress: 100 }
     ]);
-    this.monster.next({ name: 'Endgame Boss', fullHP: 150, currentHP: 150 });
+    this.monster.next({ name: 'Endgame Boss', fullHP: 150, currentHP: 150, location: { row: 9, col: 16} });
   }
 
   private createInitialWorkers(): Worker[] {
-    return [...Array(5)].map((_, i) => ({ name: `Worker ${i + 1}`, status: 'Idle', isBusy: false, progress: 0, carriedGold: 0 }));
+    return [...Array(5)].map((_, i) => (
+      { name: `Worker ${i + 1}`, status: 'Idle', isBusy: false, progress: 0, carriedGold: 0, location: { row: 1, col: i} }
+      ));
   }
 
   // ------- GETTERS ---------------
@@ -86,13 +89,15 @@ export class GameStateService {
     if (this.gold.value >= 250 && !worker.isBusy) {
       
       worker.isBusy = true;
+      worker.status = "Building Barrack"
       this.updateWorkers();
 
       const newBarrack: Barrack = {
         type: 'Barrack',
-        location: { x: 100, y: 100 }, // Valós helyzet alapján frissítendő
+        location: { row: 9, col: 0 },
         constructionProgress: 0,
-        isBusy: true
+        isBusy: true,
+        status: 'Under construction'
       };
   
       this.decreaseGold(250);
@@ -102,10 +107,12 @@ export class GameStateService {
       setTimeout(() => {
         newBarrack.constructionProgress = 100;
         newBarrack.isBusy = false;
+        newBarrack.status = 'Idle'
         worker.isBusy = false;
+        worker.status = "Idle"
         this.updateWorkers();
         this.buildings.next(this.buildings.value);
-      }, 10000); // 10 másodperc építési idő
+      }, 10000);
     }
   }
 
@@ -120,13 +127,16 @@ export class GameStateService {
   makeWarrior(barrack: Barrack): void {
     if (this.gold.value >= 200 && barrack.constructionProgress === 100 && !barrack.isBusy) {
       barrack.isBusy = true;
+      barrack.status = "Making Warrior"
+
       this.buildings.next(this.buildings.value);
 
       const newWarrior: Warrior = {
         name: `Warrior ${this.warriors.value.length + 1}`,
         damage: 5,
-        isBusy: false,
-        status: 'Idle'
+        isBusy: true,
+        status: 'Under construction',
+        location: {row: 0, col: 1}
       };
   
       this.decreaseGold(200);
@@ -134,15 +144,20 @@ export class GameStateService {
       this.warriors.next(this.warriors.value);
   
       setTimeout(() => {
+        newWarrior.isBusy = false;
+        newWarrior.status = 'Idle'
         barrack.isBusy = false;
+        barrack.status = 'Idle'
+        this.updateWarriors();
         this.buildings.next(this.buildings.value);
-      }, 10000); // 10 másodperc kiképzési idő
+      }, 10000);
     }
   }
 
   public warriorAttack(warrior: Warrior): void {
     if (this.monster.value.currentHP > 0 && !warrior.isBusy) {
       warrior.isBusy = true;
+      warrior.status = "Attack monster"
       this.updateWarriors();
       this.attackMonster(warrior.damage);
     }
@@ -151,11 +166,13 @@ export class GameStateService {
   public workerMineGold(worker: Worker): void {
     if (!worker.isBusy) {
       worker.isBusy = true;
+      worker.status = "Mining"
       this.updateWorkers();
   
       setTimeout(() => {
         worker.isBusy = false;
         worker.carriedGold = 10; 
+        worker.status = 'Idle'
         this.updateWorkers();
       }, 10000); // 10 másodperc bányászati idő
     }
@@ -170,4 +187,10 @@ export class GameStateService {
     }
   }
 
+
+  public moveUnit(selectUnit: Unit, row: number, col: number){
+
+  }
+
+  
 }

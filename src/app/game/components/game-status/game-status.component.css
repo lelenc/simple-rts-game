@@ -89,3 +89,7 @@
     background-color: #808080; /* Szürke háttér a letiltott gombnak */
     cursor: not-allowed; /* Mozgatás tilos kurzor a letiltott gombon */
   }
+
+  .selected  {
+    color: red;
+  }
