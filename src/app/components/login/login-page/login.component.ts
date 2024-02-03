@@ -18,7 +18,7 @@ export class LoginComponent {
   ngOnInit() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      //testMode: [false]
+      testMode: [false]
     });
 
     this.errorMessages = {
@@ -35,14 +35,13 @@ export class LoginComponent {
       const username = this.loginForm.value.username;
       this.authService.login(username);
 
-      /*const testMode = this.loginForm.value.testMode; // Test mode érték kiolvasása
-      console.log("testMode", testMode);
+      const testMode = this.loginForm.value.testMode; 
 
-      if (this.testMode) {
+      if (testMode) {
         this.authService.enableTestMode();
       } else {
         this.authService.disableTestMode();
-      }*/
+      }
 
       this.router.navigate(['/game']);
     }
