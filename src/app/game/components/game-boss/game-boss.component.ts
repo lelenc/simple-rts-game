@@ -7,8 +7,8 @@ import { GameStateService } from '../../../services/game-state.service';
   styleUrl: './game-boss.component.css'
 })
 export class GameBossComponent implements OnInit {
-  currentHp: number = 150;
-  fullHp: number = 150;
+  currentHp: number = 0;
+  fullHp: number = 0;
 
   constructor(private gameStateService: GameStateService) { }
 
@@ -25,7 +25,7 @@ export class GameBossComponent implements OnInit {
 
   getBackgroundColor(): string {
     const percentage = this.getHpPercentage();
-    const color = this.lerpRGB({r: 255, g: 0, b: 0}, {r: 0, g: 255, b: 0}, percentage/100);
+    const color = this.lerpRGB({ r: 255, g: 0, b: 0 }, { r: 0, g: 255, b: 0 }, percentage / 100);
     return `rgb(${color.r}, ${color.g}, ${color.b})`;
   }
 
@@ -35,6 +35,6 @@ export class GameBossComponent implements OnInit {
     color.g = color1.g + ((color2.g - color1.g) * t);
     color.b = color1.b + ((color2.b - color1.b) * t);
     return color;
-}
+  }
 
 }

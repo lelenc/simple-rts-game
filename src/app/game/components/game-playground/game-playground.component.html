@@ -16,12 +16,12 @@
 
         <ng-container *ngFor="let worker of workers">
           <img *ngIf="r == worker.location.row && c == worker.location.col"
-               src="./assets/icons/miner.svg" class="place" (mousedown)="onMouseDownWorker($event, worker)" [ngClass]="{'selected': this.selectedWorker == worker}"/>
+               src="./assets/icons/miner.svg" class="place" (mousedown)="onMouseDownWorker($event, worker)" [ngClass]="{'selected': worker.isSelected}"/>
         </ng-container>
 
         <ng-container *ngFor="let warrior of warriors">
           <img *ngIf="r == warrior.location.row && c == warrior.location.col"
-               src="./assets/icons/warrior.svg" class="place" (mousedown)="onMouseDownWarrior($event, warrior)" [ngClass]="{'selected': this.selectedWarrior == warrior}" />
+               src="./assets/icons/warrior.svg" class="place" (mousedown)="onMouseDownWarrior($event, warrior)" [ngClass]="{'selected': warrior.isSelected}" />
         </ng-container>
   
 

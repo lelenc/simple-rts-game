@@ -1,10 +1,10 @@
-<div class="worker-card" >
-    <div class="worker-image">
-        <img src="./assets/icons/warrior-status.svg">
+<div class="warrior-card" [class.selected]="warrior.isSelected">
+    <div class="warrior-image">
+        <img src="./assets/icons/warrior-status.svg" alt="warrior Image">
     </div>
-    <div class="worker-info" >
+    <div class="warrior-info">
         <h3>{{ warrior.name }}</h3>
-        <p>Status: {{ warrior.status }}</p>
-        <p>isBusy: {{ warrior.isBusy }}</p>
+        <p class="status">Status: <span>{{ warrior.status }}</span></p>
+        <p [class.is-busy]="warrior.isBusy">Busy: <span>{{ warrior.isBusy ? 'Yes' : 'No' }}</span></p>
     </div>
 </div>

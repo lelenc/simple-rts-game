@@ -1,9 +1,10 @@
-<div class="worker-card" >
-    <div class="worker-image">
-        <img src="./assets/icons/barrack-status.svg">
+<div class="barrack-card" [class.selected]="barrack.isSelected">
+    <div class="barrack-image">
+        <img src="./assets/icons/barrack-status.svg" alt="Barrack Image">
     </div>
-    <div class="worker-info" >
-        <p>isBusy: {{ barrack.isBusy }}</p>
-        <p>Status: {{ barrack.status }}</p>
+    <div class="barrack-info">
+        <!--<h3>{{ barrack.name }}</h3>-->
+        <p class="status">Status: <span>{{ barrack.status }}</span></p>
+        <p [class.is-busy]="barrack.isBusy">Busy: <span>{{ barrack.isBusy ? 'Yes' : 'No' }}</span></p>
     </div>
 </div>

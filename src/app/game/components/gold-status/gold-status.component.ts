@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GameStateService } from '../../../services/game-state.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { GameStateService } from '../../../services/game-state.service';
 export class GoldStatusComponent implements OnInit {
   gold: number = 0;
 
-  constructor(private gameStateService: GameStateService) {}
+  constructor(private gameStateService: GameStateService) { }
 
   ngOnInit(): void {
     this.gameStateService.getGold().subscribe((gold) => {

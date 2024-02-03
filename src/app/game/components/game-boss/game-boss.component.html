@@ -1,11 +1,11 @@
 <div class="boss-card">
-    <div class="boss-image">
-        <img src="./assets/icons/monster-status.svg">
-    </div>
-    <div class="boss-status">
-      <div class="hp-bar">
-        <div class="hp-fill" [style.width.%]="getHpPercentage()" [style.backgroundColor]="getBackgroundColor()"></div>
-        <div class="hp-text">{{ currentHp }} / {{ fullHp }}</div>
-      </div>
+  <div class="boss-image">
+    <img src="./assets/icons/monster-status.svg">
+  </div>
+  <div class="boss-status">
+    <div class="hp-bar">
+      <div class="hp-fill" [style.width.%]="getHpPercentage()" [style.backgroundColor]="getBackgroundColor()"></div>
+      <div class="hp-text">{{ currentHp }} / {{ fullHp }}</div>
     </div>
   </div>
+</div>

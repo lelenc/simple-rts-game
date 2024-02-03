@@ -21,15 +21,15 @@ export class GameStateService {
   initializeGame(): void {
     this.workers.next(this.createInitialWorkers());
     this.buildings.next([
-      { type: 'Base', location: { row: 0, col: 0 }, constructionProgress: 100 },
-      { type: 'GoldMine', location: { row: 0, col: 16 }, constructionProgress: 100 }
+      { type: 'Base', location: { row: 0, col: 0 }, constructionProgress: 100, isSelected: false },
+      { type: 'GoldMine', location: { row: 0, col: 16 }, constructionProgress: 100, isSelected: false }
     ]);
-    this.monster.next({ name: 'Endgame Boss', fullHP: 150, currentHP: 150, location: { row: 7, col: 16} });
+    this.monster.next({ name: 'Endgame Boss', fullHP: 150, currentHP: 150, location: { row: 7, col: 16}, isSelected: false });
   }
 
   private createInitialWorkers(): Worker[] {
     return [...Array(5)].map((_, i) => (
-      { name: `Worker ${i + 1}`, status: 'Idle', isBusy: false, progress: 0, carriedGold: 0, location: { row: 1, col: i}, type: UnitType.Worker }
+      { name: `Worker ${i + 1}`, status: 'Idle', isBusy: false, carriedGold: 0, location: { row: 1, col: i}, type: UnitType.Worker, isSelected: false }
       ));
   }
 
@@ -96,12 +96,13 @@ export class GameStateService {
         location: { row: 7, col: 0 },
         constructionProgress: 0,
         isBusy: true,
-        status: 'Under construction'
+        status: 'Under construction',
+        isSelected: false
       };
   
       this.decreaseGold(250);
-      this.buildings.value.push(newBarrack);
-      this.buildings.next(this.buildings.value);
+      this.buildings.value.push(newBarrack);this.updateBuildings();
+      this.updateBuildings();
   
       setTimeout(() => {
         newBarrack.constructionProgress = 100;
@@ -110,7 +111,7 @@ export class GameStateService {
         worker.isBusy = false;
         worker.status = "Idle"
         this.updateWorkers();
-        this.buildings.next(this.buildings.value);
+        this.updateBuildings();
       }, 10000);
     }
   }
@@ -123,12 +124,16 @@ export class GameStateService {
     this.warriors.next(this.warriors.value);
   }
 
+  private updateBuildings(): void {
+    this.buildings.next(this.buildings.value)
+  }
+
   makeWarrior(barrack: Barrack): void {
     if (this.gold.value >= 200 && barrack.constructionProgress === 100 && !barrack.isBusy) {
       barrack.isBusy = true;
       barrack.status = "Making Warrior"
 
-      this.buildings.next(this.buildings.value);
+      this.updateBuildings();
 
       const newWarrior: Warrior = {
         name: `Warrior ${this.warriors.value.length + 1}`,
@@ -136,7 +141,8 @@ export class GameStateService {
         isBusy: true,
         status: 'Under construction',
         location: {row: 0, col: 1},
-        type: UnitType.Warrior
+        type: UnitType.Warrior,
+        isSelected: false
       };
   
       this.decreaseGold(200);
@@ -149,7 +155,7 @@ export class GameStateService {
         barrack.isBusy = false;
         barrack.status = 'Idle'
         this.updateWarriors();
-        this.buildings.next(this.buildings.value);
+        this.updateBuildings();
       }, 10000);
     }
   }
@@ -257,6 +263,28 @@ export class GameStateService {
    return  this.monster.value.location.col == warrior.location.col &&
         this.monster.value.location.row == warrior.location.row
   }
+
+
+  resetSelection(): void {
+    const warriorsValue = this.warriors.value;
+    warriorsValue.forEach(warrior => warrior.isSelected = false);
+
+    const workersValue = this.workers.value;
+    workersValue.forEach(worker => worker.isSelected = false);
+  }
+
+
+  selectUnit(selectUnit: Unit){
+    this.resetSelection();
+
+    if (selectUnit !== null) {
+      selectUnit.isSelected = true;
+    }
+
+    this.updateWarriors();
+    this.updateWorkers(); 
+  }
+
 
   
 }

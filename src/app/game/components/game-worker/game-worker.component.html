@@ -1,12 +1,11 @@
-<div class="worker-card" >
+<div class="worker-card" [class.selected]="worker.isSelected">
     <div class="worker-image">
-        <img src="./assets/icons/miner-status.svg">
+        <img src="./assets/icons/miner-status.svg" alt="Worker Image">
     </div>
-    <div class="worker-info" >
+    <div class="worker-info">
         <h3>{{ worker.name }}</h3>
-        <p>Status: {{ worker.status }}</p>
-        <p>isBusy: {{ worker.isBusy }}</p>
-        <p>progress: {{ worker.progress }}</p>
-        <p>carriedGold: {{ worker.carriedGold }}</p>
+        <p class="status">Status: <span>{{ worker.status }}</span></p>
+        <p [class.is-busy]="worker.isBusy">Busy: <span>{{ worker.isBusy ? 'Yes' : 'No' }}</span></p>
+        <p class="carried-gold">Carried Gold: <span>{{ worker.carriedGold }}</span></p>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Barrack, Warrior, Worker } from '../../../modells/models';
 import { AuthService } from '../../../services/auth.service';
@@ -21,26 +21,35 @@ export class GameStatusComponent implements OnInit {
   selectedWarrior: Warrior | null = null;
 
   constructor(private authService: AuthService, private router: Router, private gameStateService: GameStateService) { }
-  
+
   ngOnInit(): void {
     this.gameStateService.getGold().subscribe((gold) => {
-      console.log('gold', gold)
       this.gold = gold;
     });
 
     this.gameStateService.getWorkers().subscribe((workers) => {
-      console.log('workers', workers)
       this.workers = workers
+
+      const selectedWorkers = workers.filter(worker => worker.isSelected);
+      this.selectedWorker = selectedWorkers.length > 0 ? selectedWorkers[0] : null;
+
     });
 
-    this.gameStateService.getBarracks().subscribe((barracks)=> {
-      console.log('barracks', barracks)
+    this.gameStateService.getBarracks().subscribe((barracks) => {
       this.barracks = barracks;
+
+      const selectedBarracks = barracks.filter(barrack => barrack.isSelected);
+      this.selectedBarrack = selectedBarracks.length > 0 ? selectedBarracks[0] : null;
+
     })
 
     this.gameStateService.getWarriors().subscribe((warriors) => {
       console.log('warriors', warriors)
       this.warriors = warriors
+
+      const selectedWarriors = warriors.filter(warrior => warrior.isSelected);
+      this.selectedWarrior = selectedWarriors.length > 0 ? selectedWarriors[0] : null;
+
     });
 
   }
@@ -55,18 +64,25 @@ export class GameStatusComponent implements OnInit {
   }
 
   selectWorker(worker: Worker): void {
-    this.selectedWorker = worker === this.selectedWorker ? null : worker;
-    console.log('selectedWorker', this.selectedWorker)
+    if (worker.isSelected) {
+      this.gameStateService.selectUnit(null);
+    } else {
+      this.gameStateService.selectUnit(worker);
+    }
   }
 
+  //TODO
   selectBarrack(barrack: Barrack): void {
     this.selectedBarrack = barrack === this.selectedBarrack ? null : barrack;
     console.log('selectedBarrack', this.selectedBarrack)
   }
 
   selectWarrior(warrior: Warrior): void {
-    this.selectedWarrior = warrior === this.selectedWarrior ? null : warrior;
-    console.log('selectedWarrior', this.selectedWarrior)
+    if (warrior.isSelected) {
+      this.gameStateService.selectUnit(null);
+    } else {
+      this.gameStateService.selectUnit(warrior);
+    }
   }
 
   buildBarrack(): void {
@@ -81,31 +97,9 @@ export class GameStatusComponent implements OnInit {
     }
   }
 
-  attackMonster(): void {
-    if (this.selectedWarrior) {
-      this.gameStateService.warriorAttack(this.selectedWarrior);
-    }
-  }
-
-  
-
-
-
-
-
-
-
   //Temp
   increaseGold(): void {
     this.gameStateService.increaseGold(200)
-  }
-
-  decreseGold(){
-    this.gameStateService.decreaseGold(1)
-  }
-
-  addDamage(){
-    this.gameStateService.attackMonster(1)
   }
 
 

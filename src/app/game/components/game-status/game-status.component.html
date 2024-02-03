@@ -6,12 +6,10 @@
 </div>
 
 <div class="status-container">
-    
+
     <div class="unit-section">
         <h2>Temp</h2>
         <button (click)="increaseGold()">Increase gold</button>
-        <button (click)="decreseGold()">Decrease gold</button>
-        <button (click)="addDamage()">Decrease boss</button>
     </div>
 
 
@@ -27,18 +25,21 @@
 
     <div class="unit-section">
         <h2>Workers</h2>
-        <app-game-worker *ngFor="let worker of workers" (click)="selectWorker(worker)" [worker]="worker" [ngClass]="{'selected': this.selectedWorker == worker}"></app-game-worker>
+        <app-game-worker *ngFor="let worker of workers" (click)="selectWorker(worker)"
+            [worker]="worker"></app-game-worker>
     </div>
 
     <div class="unit-section">
         <h2>Barracks</h2>
-        <app-game-barrack *ngFor="let barrack of barracks" (click)="selectBarrack(barrack)" [barrack]="barrack" [ngClass]="{'selected': this.selectedBarrack == barrack }" ></app-game-barrack>
+        <app-game-barrack *ngFor="let barrack of barracks" (click)="selectBarrack(barrack)"
+            [barrack]="barrack"></app-game-barrack>
         <button [disabled]="!selectedWorker || gold < 250" (click)="buildBarrack()">Build Barrack</button>
     </div>
 
     <div class="unit-section">
         <h2>Warriors</h2>
-        <app-game-warrior *ngFor="let warrior of warriors" [warrior]="warrior" (click)="selectWarrior(warrior)" [ngClass]="{'selected': this.selectedWarrior == warrior}" ></app-game-warrior>
+        <app-game-warrior *ngFor="let warrior of warriors" (click)="selectWarrior(warrior)"
+            [warrior]="warrior"></app-game-warrior>
         <button [disabled]="!selectedBarrack || gold < 200" (click)="makeWarrior()">Make Warrior</button>
     </div>
 

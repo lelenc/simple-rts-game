@@ -1,19 +1,22 @@
-export interface Building {
-    type: string; 
-    location: { row: number, col: number }; 
-    constructionProgress: number; 
-  }
-  
-  export interface Barrack extends Building {
-    isBusy: boolean,
-    status: string;
-  }
+export interface Base {
+  location: { row: number, col: number };
+  isSelected: boolean;
+}
 
-  export interface Monster {
-    name: string; 
-    currentHP: number; 
-    fullHP: number;
-    location: { row: number, col: number }; 
+export interface Building extends Base {
+  type: string;
+  constructionProgress: number;
+}
+
+export interface Barrack extends Building {
+  isBusy: boolean,
+  status: string;
+}
+
+export interface Monster extends Base{
+  name: string;
+  currentHP: number;
+  fullHP: number;
 }
 
 export enum UnitType {
@@ -21,19 +24,17 @@ export enum UnitType {
   Worker = 'Worker'
 }
 
-export interface Unit {
-    name: string;
-    status: string;
-    isBusy: boolean,
-    location: { row: number, col: number }; 
-    type: UnitType;
+export interface Unit extends Base {
+  name: string;
+  status: string;
+  isBusy: boolean,
+  type: UnitType;
 }
 
 export interface Warrior extends Unit {
-    damage: number;
+  damage: number;
 }
 
 export interface Worker extends Unit {
-    progress: number;
-    carriedGold: number
-  }
+  carriedGold: number
+}
