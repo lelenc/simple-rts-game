@@ -1,2 +1,14 @@
-<app-game-status></app-game-status>
-<app-game-playground></app-game-playground>
+<div class="modal-container" *ngIf="showCongratulationsModal">
+    <div class="modal-content">
+      <h2>Congratulations!</h2>
+      <p>The monster is died.</p>
+      <button (click)="closeModal()">Close</button>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="game-components">
+      <app-game-status [testMode]="testMode"></app-game-status>
+      <app-game-playground></app-game-playground>
+    </div>
+  </div>

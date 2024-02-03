@@ -6,6 +6,7 @@
     border-radius: 5px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .barrack-card.selected {

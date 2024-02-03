@@ -25,7 +25,7 @@
     font-size: 18px;
   }
   
-  .logout-button {
+  .logout-button, .repeat-button {
     cursor: pointer;
     background-color: #005c20;
     color: #ffffff;
@@ -36,12 +36,12 @@
     margin-left: 10px;
   }
   
-  .logout-button img {
+  .logout-button img, .repeat-button img {
     width: 20px;
     height: 20px;
   }
   
-  .logout-button:hover {
+  .logout-button:hover, .repeat-button:hover {
     background-color: #004f1a;
   }
   
@@ -56,10 +56,6 @@
     width: 0;
     background-color: transparent; 
   }
-  
-  /*.unit-section {
-    margin-top: 20px;
-  }*/
   
   h2 {
     font-size: 18px;
@@ -86,10 +82,7 @@
   }
 
   button[disabled] {
-    background-color: #808080; /* Szürke háttér a letiltott gombnak */
-    cursor: not-allowed; /* Mozgatás tilos kurzor a letiltott gombon */
+    background-color: #808080;
+    cursor: not-allowed; 
   }
 
-  .selected  {
-    /*color: red;*/
-  }

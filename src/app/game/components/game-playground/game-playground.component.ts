@@ -7,7 +7,8 @@ import { GameStateService } from '../../../services/game-state.service';
   templateUrl: './game-playground.component.html',
   styleUrl: './game-playground.component.css'
 })
-export class GamePlaygroundComponent implements OnInit{
+export class GamePlaygroundComponent implements OnInit {
+
   rowSize: number = 8;
   colSize: number = 17;
 
@@ -17,25 +18,35 @@ export class GamePlaygroundComponent implements OnInit{
   monster: Monster
 
   selectedWorker: Worker | null = null;
+  selectedBuilding: Building | null = null;
   selectedWarrior: Warrior | null = null;
 
   constructor(private gameStateService: GameStateService) { }
-  
+
 
   ngOnInit(): void {
     this.gameStateService.getWorkers().subscribe((workers) => {
-      console.log('workers', workers)
       this.workers = workers
+
+      const selectedWorkers = workers.filter(worker => worker.isSelected);
+      this.selectedWorker = selectedWorkers.length > 0 ? selectedWorkers[0] : null;
+
     });
 
-    this.gameStateService.getBuildings().subscribe((buildings)=> {
-      console.log('barracks', buildings)
+    this.gameStateService.getBuildings().subscribe((buildings) => {
       this.buildings = buildings;
+
+      const selectedBuildings = buildings.filter(building => building.isSelected);
+      this.selectedBuilding = selectedBuildings.length > 0 ? selectedBuildings[0] : null;
+
     })
 
     this.gameStateService.getWarriors().subscribe((warriors) => {
-      console.log('warriors', warriors)
       this.warriors = warriors
+
+      const selectedWarriors = warriors.filter(warrior => warrior.isSelected);
+      this.selectedWarrior = selectedWarriors.length > 0 ? selectedWarriors[0] : null;
+
     });
 
     this.gameStateService.getMonster().subscribe((monster) => {
@@ -56,32 +67,52 @@ export class GamePlaygroundComponent implements OnInit{
     }
   }
 
-  onMouseDown(event: MouseEvent, row : number, col: number){
+  onMouseDownBuilding(event: MouseEvent, building: Building) {
+    if (event.button === 0) {
+      this.selectBuilding(building);
+    }
+  }
+  
+  onMouseDown(event: MouseEvent, row: number, col: number) {
     console.log('event', event, row, col)
     if (event.button === 2) {
-      if (this.selectedWorker || this.selectWarrior) {
+      if (this.selectedWorker || this.selectedWarrior) {
         this.moveSelectedUnit(row, col);
       }
     }
   }
 
   selectWorker(worker: Worker): void {
-    this.selectedWorker = worker === this.selectedWorker ? null : worker;
-    this.selectedWarrior = null;
-    console.log('selectedWorker', this.selectedWorker)
+    if (worker.isSelected) {
+      this.gameStateService.selectUnit(null);
+    } else {
+      this.gameStateService.selectUnit(worker);
+    }
   }
+
+  selectBuilding(building: Building) {
+    if (building.isSelected) {
+      this.gameStateService.selectUnit(null);
+    } else {
+      this.gameStateService.selectUnit(building);
+    }
+  }
+
 
   selectWarrior(warrior: Warrior): void {
-    this.selectedWarrior = warrior === this.selectedWarrior ? null : warrior;
-    this.selectedWorker = null;
-    console.log('selectedWarrior', this.selectedWarrior)
+    if (warrior.isSelected) {
+      this.gameStateService.selectUnit(null);
+    } else {
+      this.gameStateService.selectUnit(warrior);
+    }
   }
 
-  moveSelectedUnit(row: number, col: number){
-    if(this.selectedWorker){
+  moveSelectedUnit(row: number, col: number) {
+    console.log('move selected', row, col)
+    if (this.selectedWorker && !this.selectedWorker.isBusy) {
       this.gameStateService.moveUnit(this.selectedWorker, row, col);
     }
-    if(this.selectedWarrior){
+    if (this.selectedWarrior && !this.selectedWarrior.isBusy) {
       this.gameStateService.moveUnit(this.selectedWarrior, row, col);
     }
   }

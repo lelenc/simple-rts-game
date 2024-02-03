@@ -1,5 +1,8 @@
 <div class="header">
     <span class="welcome-text">Welcome {{ user }}</span>
+    <div class="repeat-button" (click)="repeat()">
+        <img src="./assets/icons/repeat.svg">
+    </div>
     <div class="logout-button" (click)="logout()">
         <img src="./assets/icons/logout.svg">
     </div>
@@ -7,11 +10,12 @@
 
 <div class="status-container">
 
-    <div class="unit-section">
-        <h2>Temp</h2>
+    <div *ngIf="testMode" class="unit-section">
+        <h2>Test Mode</h2>
         <button (click)="increaseGold()">Increase gold</button>
+        <button (click)="decreseGold()">Decrease gold</button>
+        <button (click)="addDamage()">Lose HP of Boss</button>
     </div>
-
 
     <div class="unit-section">
         <h2>Gold</h2>

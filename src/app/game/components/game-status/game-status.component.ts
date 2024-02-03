@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Barrack, Warrior, Worker } from '../../../modells/models';
 import { AuthService } from '../../../services/auth.service';
@@ -11,6 +11,7 @@ import { GameStateService } from '../../../services/game-state.service';
   styleUrl: './game-status.component.css'
 })
 export class GameStatusComponent implements OnInit {
+  @Input('testMode') testMode: boolean;
   gold: number = 0;
   workers: Worker[];
   barracks: Barrack[];
@@ -44,7 +45,6 @@ export class GameStatusComponent implements OnInit {
     })
 
     this.gameStateService.getWarriors().subscribe((warriors) => {
-      console.log('warriors', warriors)
       this.warriors = warriors
 
       const selectedWarriors = warriors.filter(warrior => warrior.isSelected);
@@ -63,6 +63,10 @@ export class GameStatusComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  repeat(): void {
+    this.gameStateService.initializeGame();
+  }
+
   selectWorker(worker: Worker): void {
     if (worker.isSelected) {
       this.gameStateService.selectUnit(null);
@@ -71,10 +75,12 @@ export class GameStatusComponent implements OnInit {
     }
   }
 
-  //TODO
   selectBarrack(barrack: Barrack): void {
-    this.selectedBarrack = barrack === this.selectedBarrack ? null : barrack;
-    console.log('selectedBarrack', this.selectedBarrack)
+    if (barrack.isSelected) {
+      this.gameStateService.selectUnit(null);
+    } else {
+      this.gameStateService.selectUnit(barrack);
+    }
   }
 
   selectWarrior(warrior: Warrior): void {
@@ -97,9 +103,17 @@ export class GameStatusComponent implements OnInit {
     }
   }
 
-  //Temp
+  //Test mode
   increaseGold(): void {
     this.gameStateService.increaseGold(200)
+  }
+
+  decreseGold() {
+    this.gameStateService.decreaseGold(1)
+  }
+
+  addDamage() {
+    this.gameStateService.attackMonster(1)
   }
 
 

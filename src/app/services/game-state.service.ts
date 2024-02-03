@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, interval, map, Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Building, Monster, Warrior, Worker, Barrack, Unit, UnitType } from '../modells/models';
+import { Building, Monster, Warrior, Worker, Barrack, Unit, UnitType, Base } from '../modells/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameStateService {
-  
+
   private workers: BehaviorSubject<Worker[]> = new BehaviorSubject<Worker[]>([]);
   private buildings: BehaviorSubject<Building[]> = new BehaviorSubject<Building[]>([]);
   private warriors: BehaviorSubject<Warrior[]> = new BehaviorSubject<Warrior[]>([]);
@@ -16,7 +16,7 @@ export class GameStateService {
 
   private warriorIntervals: Map<string, Subscription> = new Map<string, Subscription>();
 
-  constructor() {}
+  constructor() { }
 
   initializeGame(): void {
     this.workers.next(this.createInitialWorkers());
@@ -24,13 +24,13 @@ export class GameStateService {
       { type: 'Base', location: { row: 0, col: 0 }, constructionProgress: 100, isSelected: false },
       { type: 'GoldMine', location: { row: 0, col: 16 }, constructionProgress: 100, isSelected: false }
     ]);
-    this.monster.next({ name: 'Endgame Boss', fullHP: 150, currentHP: 150, location: { row: 7, col: 16}, isSelected: false });
+    this.monster.next({ name: 'Endgame Boss', fullHP: 150, currentHP: 150, location: { row: 7, col: 16 }, isSelected: false });
   }
 
   private createInitialWorkers(): Worker[] {
     return [...Array(5)].map((_, i) => (
-      { name: `Worker ${i + 1}`, status: 'Idle', isBusy: false, carriedGold: 0, location: { row: 1, col: i}, type: UnitType.Worker, isSelected: false }
-      ));
+      { name: `Worker ${i + 1}`, status: 'Idle', isBusy: false, carriedGold: 0, location: { row: 1, col: i }, type: UnitType.Worker, isSelected: false }
+    ));
   }
 
   // ------- GETTERS ---------------
@@ -62,11 +62,11 @@ export class GameStateService {
   }
 
   // -------------- GOLD -----------------
-  
+
   public decreaseGold(amount: number): void {
     if (this.gold.value >= amount) {
       this.gold.next(this.gold.value - amount);
-    } 
+    }
   }
 
   public increaseGold(amount: number): void {
@@ -86,7 +86,7 @@ export class GameStateService {
 
   buildBarrack(worker: Worker): void {
     if (this.gold.value >= 250 && !worker.isBusy) {
-      
+
       worker.isBusy = true;
       worker.status = "Building Barrack"
       this.updateWorkers();
@@ -99,11 +99,11 @@ export class GameStateService {
         status: 'Under construction',
         isSelected: false
       };
-  
+
       this.decreaseGold(250);
-      this.buildings.value.push(newBarrack);this.updateBuildings();
+      this.buildings.value.push(newBarrack); this.updateBuildings();
       this.updateBuildings();
-  
+
       setTimeout(() => {
         newBarrack.constructionProgress = 100;
         newBarrack.isBusy = false;
@@ -140,15 +140,15 @@ export class GameStateService {
         damage: 5,
         isBusy: true,
         status: 'Under construction',
-        location: {row: 0, col: 1},
+        location: { row: 0, col: 1 },
         type: UnitType.Warrior,
         isSelected: false
       };
-  
+
       this.decreaseGold(200);
       this.warriors.value.push(newWarrior);
       this.warriors.next(this.warriors.value);
-  
+
       setTimeout(() => {
         newWarrior.isBusy = false;
         newWarrior.status = 'Idle'
@@ -171,7 +171,7 @@ export class GameStateService {
         const attackInterval = interval(1000).pipe(
           takeUntil(new Subject<void>())
         );
-    
+
         const subscription = attackInterval.subscribe(() => {
           if (this.monster.value.currentHP > 0 && this.isWarriorCloseToMonster(warrior)) {
             this.attackMonster(warrior.damage);
@@ -179,27 +179,27 @@ export class GameStateService {
             this.stopWarriorAttack(warrior);
           }
         });
-    
+
         this.warriorIntervals.set(warrior.name, subscription);
       }
-      
+
     }
   }
 
   startWarriorAttack(warrior: Warrior): void {
     warrior.isBusy = true;
     warrior.status = 'Attack monster';
-  
-    
+
+
   }
-  
+
   stopWarriorAttack(warrior: Warrior): void {
     warrior.isBusy = false;
     warrior.status = 'Idle';
     this.updateWarriors();
 
     console.log('stop attack', warrior)
-  
+
     if (this.warriorIntervals.has(warrior.name)) {
       this.warriorIntervals.get(warrior.name)?.unsubscribe();
       this.warriorIntervals.delete(warrior.name);
@@ -213,16 +213,16 @@ export class GameStateService {
       worker.isBusy = true;
       worker.status = "Mining"
       this.updateWorkers();
-  
+
       setTimeout(() => {
         worker.isBusy = false;
-        worker.carriedGold = 10; 
+        worker.carriedGold = 10;
         worker.status = 'Idle'
         this.updateWorkers();
       }, 10000); // 10 másodperc bányászati idő
     }
   }
-  
+
   public workerDepositGold(worker: Worker): void {
     if (worker.carriedGold > 0 && !worker.isBusy) {
 
@@ -233,9 +233,9 @@ export class GameStateService {
   }
 
 
-  public moveUnit(selectUnit: Unit, row: number, col: number){
-    selectUnit.location = {row, col};
-    
+  public moveUnit(selectUnit: Unit, row: number, col: number) {
+    selectUnit.location = { row, col };
+
     if (selectUnit.type == UnitType.Worker) {
       console.log("Worker")
       console.log(this.buildings.value)
@@ -243,7 +243,7 @@ export class GameStateService {
       console.log(building)
       if (building.length && building[0].type === 'GoldMine') {
         this.workerMineGold(selectUnit as Worker);
-      }else if(building.length && building[0].type === 'Base'){
+      } else if (building.length && building[0].type === 'Base') {
         this.workerDepositGold(selectUnit as Worker)
       }
 
@@ -251,8 +251,8 @@ export class GameStateService {
     }
 
 
-    if (selectUnit.type == UnitType.Warrior){
-      if(this.isWarriorCloseToMonster(selectUnit as Warrior)){
+    if (selectUnit.type == UnitType.Warrior) {
+      if (this.isWarriorCloseToMonster(selectUnit as Warrior)) {
         this.warriorAttack(selectUnit as Warrior);
       }
     }
@@ -260,8 +260,8 @@ export class GameStateService {
   }
 
   isWarriorCloseToMonster(warrior: Warrior) {
-   return  this.monster.value.location.col == warrior.location.col &&
-        this.monster.value.location.row == warrior.location.row
+    return this.monster.value.location.col == warrior.location.col &&
+      this.monster.value.location.row == warrior.location.row
   }
 
 
@@ -271,20 +271,24 @@ export class GameStateService {
 
     const workersValue = this.workers.value;
     workersValue.forEach(worker => worker.isSelected = false);
+
+    const buildingsValue = this.buildings.value;
+    buildingsValue.forEach(building => building.isSelected = false)
   }
 
 
-  selectUnit(selectUnit: Unit){
+  selectUnit(selectUnit: Base) {
     this.resetSelection();
 
     if (selectUnit !== null) {
       selectUnit.isSelected = true;
     }
 
+    this.updateWorkers();
+    this.updateBuildings();
     this.updateWarriors();
-    this.updateWorkers(); 
+
   }
 
 
-  
 }

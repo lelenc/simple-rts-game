@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
   private readonly USERNAME_KEY = 'app_username';
+  private readonly TESMODE_KEY = 'testMode';
 
   constructor() { }
 
@@ -22,6 +23,19 @@ export class AuthService {
 
   getUsername(): string | null {
     return localStorage.getItem(this.USERNAME_KEY);
+  }
+
+  isTestModeEnabled(): boolean {
+    const testModeValue = localStorage.getItem(this.TESMODE_KEY);
+    return testModeValue === 'true';
+  }
+
+  enableTestMode(): void {
+    localStorage.setItem(this.TESMODE_KEY, 'true');
+  }
+
+  disableTestMode(): void {
+    localStorage.setItem(this.TESMODE_KEY, 'false');
   }
   
 }

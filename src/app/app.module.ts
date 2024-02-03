@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,7 +16,8 @@ import { GameModule } from './game/game.module';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    GameModule
+    GameModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

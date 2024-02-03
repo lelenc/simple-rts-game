@@ -4,8 +4,8 @@
         
 
         <ng-container *ngFor="let building of buildings">
-          <img *ngIf="r == building.location.row && c == building.location.col && building.type == 'Barrack'"
-               src="./assets/icons/barracks.svg" class="place" />
+          <img *ngIf="r == building.location.row && c == building.location.col && building.type == 'Barrack'" [ngClass]="{'selected': building.isSelected}" 
+               src="./assets/icons/barracks.svg" class="place" (mousedown)="onMouseDownBuilding($event, building)" />
         
           <img *ngIf="r == building.location.row && c == building.location.col && building.type == 'GoldMine'"
                src="./assets/icons/mine.svg" class="place" />
